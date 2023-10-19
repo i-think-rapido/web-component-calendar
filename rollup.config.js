@@ -5,6 +5,8 @@ import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import css from 'rollup-plugin-css-only';
+import sveltePreprocess from 'svelte-preprocess';
+import typescript from '@rollup/plugin-typescript';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -30,21 +32,40 @@ function serve() {
 }
 
 export default {
-	input: [ 'src/web-components/Calendar.svelte' ],
+	input: [ 
+		'src/web-components/Calendar.svelte',
+	],
 	output: {
 		sourcemap: true,
 		format: 'iife',
-		name: 'app',
+		name: 'SchaffereiCalendar',
 		file: 'public/build/schafferei-calendar.js'
 	},
 	plugins: [
 		svelte({
+			preprocess: sveltePreprocess({
+				sourceMap: !production,
+			}),
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production,
 				customElement: true,
-			}
+			},
+			emitCss: false,
+			include: './src/web-components/Calendar.svelte',
 		}),
+		svelte({
+			preprocess: sveltePreprocess({
+				sourceMap: !production,
+			}),
+			compilerOptions: {
+				// enable run-time checks when not in production
+				dev: !production,
+			},
+			emitCss: true,
+			include: ['./src/components/**/*.svelte'],
+		}),
+
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),
@@ -60,6 +81,11 @@ export default {
 			exportConditions: ['svelte']
 		}),
 		commonjs(),
+		typescript({
+			sourceMap: !production,
+			inlineSources: !production
+		}),
+		typescript(),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
@@ -77,3 +103,4 @@ export default {
 		clearScreen: false
 	}
 };
+
