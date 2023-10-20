@@ -6,7 +6,7 @@
     import { calendarDays, EVENT_FORMAT, MONTH_FORMAT, formatMoment } from '../utils/date';
 
     export let date = moment()
-    export let events = {}
+    export let calendar = {}
     export let lang
 
     let selectedDay
@@ -15,7 +15,7 @@
 
     $: {
         selectedDay = date.startOf('day')
-        eventDays = _.keys(events)
+        eventDays = _.keys(calendar.events)
     }
 
     const weekDayNames = (): string[] => {
@@ -32,7 +32,7 @@
         return _.includes(eventDays, date.format(EVENT_FORMAT))
     }
     const displayEvents = (date: Moment) => {
-        eventData = events[date.format(EVENT_FORMAT)] || []
+        eventData = calendar.events[date.format(EVENT_FORMAT)] || []
     }
     const hideEvents = () => {
         eventData = []
@@ -65,7 +65,7 @@
     </main>
     <footer>
         {#if !_.isEmpty(eventData)}
-            <h5>Veranstaltungen</h5>
+            <h5>{calendar.header}</h5>
             {#each eventData as data}
                 <CalendarEvent {data}/>
             {/each}

@@ -1,10 +1,10 @@
 
-header: Events
+header: Veranstaltungen
 
 events:
   19-10-2023:
     - "
-      # open workshop
+      # offene Werkstatt
 
       *18:00 - 21:00*
       "
@@ -16,11 +16,11 @@ events:
       *14:00 - 17:00*
 
 
-      We repair old stuff
+      Wir reparieren altes Zeug
       "
 
   25-11-2023:
     - "
-      **Town Festival**
+      **Stadtfest**
       "
 

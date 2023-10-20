@@ -16,7 +16,7 @@
     export let src
     export let css
 
-    let events = {}
+    let calendar = {}
     let months = []
 
     onMount(async () => {
@@ -25,7 +25,7 @@
                 src = src.replace(/\.yaml/, `.${lang}.yaml`)
             }
             const content = await fetch(src).then((response) => response.text())
-            events = yaml.load(content)
+            calendar = yaml.load(content)
         }
         if (!!css) {
             applyStylesheet(css)
@@ -66,7 +66,7 @@
 <div web-component bind:this={comp}>
     {#if visible}
         {#each months as date}
-            <CalendarWidget {lang} {date} {events}/>
+            <CalendarWidget {lang} {date} {calendar}/>
         {/each}
     {/if}
 </div>

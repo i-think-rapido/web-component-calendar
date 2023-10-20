@@ -30,7 +30,7 @@ export const calendarDays = (date: Moment): CalendarDay[] => {
 export const formatMoment = (date: Moment, lang: string, format: string): string => {
     let locale
     switch(lang) {
-        case 'de': locale = de; break;
+        case 'de': locale = de; break
         default: locale = undefined
     }
     return fmt(date.toDate(), format, { locale: locale })
