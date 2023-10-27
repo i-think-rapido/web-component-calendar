@@ -22,7 +22,8 @@
     onMount(async () => {
         if (!!src) {
             if (!!lang) {
-                src = src.replace(/\.yaml/, `.${lang}.yaml`)
+                src = src.replace(/\.yml$/, `.${lang}.yml`)
+                src = src.replace(/\.yaml$/, `.${lang}.yaml`)
             }
             const content = await fetch(src).then((response) => response.text())
             calendar = yaml.load(content)
