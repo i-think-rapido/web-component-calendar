@@ -18,6 +18,7 @@
 
     let calendar = {}
     let months = []
+    let visibility = []
 
     onMount(async () => {
         if (!!src) {
@@ -40,6 +41,7 @@
                     .map(n => startDate.clone().add(n, 'months'))
                     .value()
         lang = lang || 'en'
+        resetVisibiltiy()
     }
 
     const applyStylesheet = async (url: string) => {
@@ -63,12 +65,16 @@
         visible = true
     }
 
+    const resetVisibiltiy = (id = undefined) =>{ 
+        visibility = _.map(months, (_) => false)
+    }
+
 </script>
 
 <div web-component bind:this={comp}>
     {#if visible}
-        {#each months as date}
-            <CalendarWidget {lang} {date} {calendar}/>
+        {#each months as date, id}
+            <CalendarWidget {lang} {date} {calendar} bind:visibility={visibility} {id}/>
         {/each}
     {/if}
 </div>

@@ -8,6 +8,8 @@
     export let date = moment()
     export let calendar = {}
     export let lang
+    export let visibility
+    export let id
 
     let selectedDay
     let eventDays = []
@@ -32,10 +34,17 @@
         return _.includes(eventDays, date.format(EVENT_FORMAT))
     }
     const displayEvents = (date: Moment) => {
-        eventData = calendar.events[date.format(EVENT_FORMAT)] || []
+        const result = calendar.events[date.format(EVENT_FORMAT)]
+        if (!!result) {
+            eventData = result || []
+            showEvents()
+        }
     }
     const hideEvents = () => {
         eventData = []
+    }
+    const showEvents = () => {
+        visibility = _.map(visibility, (_, idx) => id == idx)
     }
 </script>
 
@@ -53,7 +62,7 @@
         </div>
         <div class="picker">
             {#each calendarDays(selectedDay) as day}
-                <div on:mouseover={_ => displayEvents(day.moment)} on:mouseout={hideEvents}>
+                <div on:mouseover={_ => displayEvents(day.moment)}>
                     <span 
                         class:in-month={day.in_month}
                         class:is-current-day={isCurrentDay(day.moment)}
@@ -64,7 +73,7 @@
         </div>
     </main>
     <footer>
-        {#if !_.isEmpty(eventData)}
+        {#if visibility[id]}
             <h5>{calendar.header}</h5>
             {#each eventData as data}
                 <CalendarEvent {data}/>
