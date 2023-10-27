@@ -3,7 +3,7 @@
     import type { Moment } from "moment";
     import moment from 'moment';
     import CalendarEvent from './CalendarEvent.svelte';
-    import { calendarDays, EVENT_FORMAT, MONTH_FORMAT, formatMoment } from '../utils/date';
+    import { calendarDays, EVENT_FORMAT, MONTH_FORMAT, DISPLAY_FORMAT, formatMoment } from '../utils/date';
 
     export let date = moment()
     export let calendar = {}
@@ -12,6 +12,7 @@
     export let id
 
     let selectedDay
+    let displayedDay
     let eventDays = []
     let eventData = []
 
@@ -36,6 +37,7 @@
     const displayEvents = (date: Moment) => {
         const result = calendar.events[date.format(EVENT_FORMAT)]
         if (!!result) {
+            displayedDay = date
             eventData = result || []
             showEvents()
         }
@@ -75,6 +77,7 @@
     <footer>
         {#if visibility[id]}
             <h5>{calendar.header}</h5>
+            <p>{formatMoment(displayedDay, lang, DISPLAY_FORMAT)}</p>
             {#each eventData as data}
                 <CalendarEvent {data}/>
             {/each}

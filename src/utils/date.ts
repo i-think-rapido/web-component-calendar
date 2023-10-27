@@ -2,13 +2,13 @@ import _ from 'lodash';
 import type { Moment } from "moment";
 import { format as fmt } from 'date-fns';
 import { de } from 'date-fns/locale'
-import moment from 'moment';
 
 import { allSupportedLocales } from 'moment-utl';
 
 export const DAY_FORMAT = 'd'
 export const EVENT_FORMAT = 'DD-MM-YYYY'
 export const MONTH_FORMAT = 'MMMM yyyy'
+export const DISPLAY_FORMAT = 'dd.M.yyyy'
 
 interface CalendarDay {
     moment: Moment;
