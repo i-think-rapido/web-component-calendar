@@ -50,9 +50,10 @@
             return
         }
 
-        const css = await fetch(url).then((respone) => {
+        let css = await fetch(url).then((respone) => {
             return respone.text()
         })
+        css += '.link{color:white}'
 
         let el = document.createElement('style')
         el.innerText = css

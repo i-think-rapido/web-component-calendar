@@ -9,6 +9,7 @@
         let content = data || ''
         content = content.replace(/^[^#]*?#{1,6}|\n#{1,6}/g, '####')
         html = marked.parse(content)
+        html = html.replaceAll('<a ', '<a class="link" ')
     }
 
 </script>
