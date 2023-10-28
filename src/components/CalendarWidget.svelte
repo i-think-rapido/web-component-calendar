@@ -13,12 +13,14 @@
 
     let selectedDay
     let displayedDay
+    let days
     let eventDays = []
     let eventData = []
 
     $: {
         selectedDay = date.startOf('day')
         eventDays = _.keys(calendar.events)
+        days = calendarDays(selectedDay)
     }
 
     const weekDayNames = (): string[] => {
@@ -42,12 +44,10 @@
             showEvents()
         }
     }
-    const hideEvents = () => {
-        eventData = []
-    }
     const showEvents = () => {
         visibility = _.map(visibility, (_, idx) => id == idx)
     }
+
 </script>
 
 <div class="container">
@@ -63,7 +63,7 @@
             {/each}
         </div>
         <div class="picker">
-            {#each calendarDays(selectedDay) as day}
+            {#each days as day}
                 <div on:mouseover={_ => displayEvents(day.moment)}>
                     <span 
                         class:in-month={day.in_month}
@@ -72,6 +72,9 @@
                         >{day.num}</span>
                 </div>
             {/each}
+            {#if days.length <= 35}
+                <div><span>&nbsp;</span></div>
+            {/if}
         </div>
     </main>
     <footer>
@@ -91,64 +94,75 @@
         box-sizing: border-box;
     }
 
-    $padding: 1rem;
-    $width: 320px;
-    $size: calc(($width - 2*$padding) / 7);
-    $header-bg: #33c;
+    $padding:       1rem;
+    $gap:           .5rem;
+    $cell-gap:      .1rem;
+    $cell-size:     2.4rem - 2 * $cell-gap;
+    $width-inner:   $cell-size * 7;
+    $width-outer:   $width-inner + 2 * $padding;
+
+    $header-col:    white;
+    $header-col-bg: #33c;
+    $main-col:      #333;
+    $main-col-bg:   white;
+
     .container {
-        width: $width;
-        z-index: 10000;
+        z-index: 10000;;
         flex-wrap: wrap;
     }
+    header, main, footer {
+        width: $width-outer;
+    }
+    main {
+        padding: .5rem 0;
+        background: $main-col-bg;
+    }
     header {
+        display: table;
         height: 100px;
-        width: $width;
         font-size: 1.5rem;
         text-align: center;
-        background-color: $header-bg;
-        color: white;
+        background-color: $header-col-bg;
+        color: $header-col;
         padding: $padding;
         border-radius: 10px 10px 0 0;
-        span {
-            text-transform: uppercase;
-            font-size: .6rem;
-        }
         div {
-            margin-top: 1.4rem;
+            display: table-cell;
+            font-size: 1rem;
+            vertical-align: middle;
         }
     }
     footer {
         min-height: 20px;
-        width: $width;
-        background-color: $header-bg;
-        color: white;
+        background-color: $header-col-bg;
+        color: $header-col;
         padding: $padding * 2;
         border-radius: 0 0 10px 10px;
+        h5 {
+            font-size: 1rem;
+            margin: .5rem 0;
+        }
     }
-    h5 {
-        font-size: 1.5rem;
-        margin: .5rem 0;
-    }
-    div.picker, div.week-day, div.buttons {
+    div.picker, div.week-day {
         display: flex;
         flex-wrap: wrap;
-        background-color: white;
-        width: $width;
-        padding: $padding;
+        justify-content: center;
+        background-color: $main-col-bg;
+        font-size: .8rem;
     }
     div.picker, div.week-day {
         &>div {
             display: table;
-            width: $size;
-            height: $size;
-            border-spacing: 4px;
+            border-spacing: $cell-gap;
             &>span {
                 display: table-cell;
+                width: $cell-size;
+                height: $cell-size;
                 text-align: center;
                 vertical-align: middle;
                 color: gray;
                 padding-top: 3px;
-                border-radius: calc($size / 2);
+                border-radius: calc($cell-size / 2);
                 &.in-month {
                     color: black;
                 }
