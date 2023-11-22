@@ -56,7 +56,7 @@
         let css = await fetch(url).then((respone) => {
             return respone.text()
         })
-        css += '.link{color:white}'
+        css += '*{overflow-wrap:break-word;}.link{color:white}'
 
         let el = document.createElement('style')
         el.innerText = css
@@ -82,6 +82,7 @@
 <style>
     div[web-component] {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         gap: 1rem;
         margin: 0 auto;

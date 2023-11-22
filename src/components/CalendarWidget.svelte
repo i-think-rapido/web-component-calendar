@@ -51,41 +51,43 @@
 </script>
 
 <div class="container">
-    <header>
-        <div>{monthName(selectedDay)}</div>
-    </header>
-    <main>
-        <div class="week-day">
-            {#each weekDayNames() as name}
-                <div>
-                    <span>{name}</span>
-                </div>
-            {/each}
-        </div>
-        <div class="picker">
-            {#each days as day}
-                <div on:mouseover={_ => displayEvents(day.moment)}>
-                    <span 
-                        class:in-month={day.in_month}
-                        class:is-current-day={isCurrentDay(day.moment)}
-                        class:has-events={hasEvents(day.moment)}
-                        >{day.num}</span>
-                </div>
-            {/each}
-            {#if days.length <= 35}
-                <div><span>&nbsp;</span></div>
+    <div>
+        <header>
+            <div>{monthName(selectedDay)}</div>
+        </header>
+        <main>
+            <div class="week-day">
+                {#each weekDayNames() as name}
+                    <div>
+                        <span>{name}</span>
+                    </div>
+                {/each}
+            </div>
+            <div class="picker">
+                {#each days as day}
+                    <div on:mouseover={_ => displayEvents(day.moment)}>
+                        <span 
+                            class:in-month={day.in_month}
+                            class:is-current-day={isCurrentDay(day.moment)}
+                            class:has-events={hasEvents(day.moment)}
+                            >{day.num}</span>
+                    </div>
+                {/each}
+                {#if days.length <= 35}
+                    <div><span>&nbsp;</span></div>
+                {/if}
+            </div>
+        </main>
+        <footer>
+            {#if visibility[id]}
+                <h5>{calendar.header}</h5>
+                <p>{formatMoment(displayedDay, lang, DISPLAY_FORMAT)}</p>
+                {#each eventData as data}
+                    <CalendarEvent {data}/>
+                {/each}
             {/if}
-        </div>
-    </main>
-    <footer>
-        {#if visibility[id]}
-            <h5>{calendar.header}</h5>
-            <p>{formatMoment(displayedDay, lang, DISPLAY_FORMAT)}</p>
-            {#each eventData as data}
-                <CalendarEvent {data}/>
-            {/each}
-        {/if}
-    </footer>
+        </footer>
+    </div>
 </div>
 
 <style lang="scss">
@@ -107,8 +109,7 @@
     $main-col-bg:   white;
 
     .container {
-        z-index: 10000;;
-        flex-wrap: wrap;
+        z-index: 10000;
     }
     header, main, footer {
         width: $width-outer;
